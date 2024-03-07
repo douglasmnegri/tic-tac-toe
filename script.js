@@ -7,46 +7,22 @@ function GameBoard() {
 
   const getBoard = () => board;
 
-  return { getBoard };
+  function resetBoard() {
+    board = [];
+    for (let i = 0; i < grid; i++) {
+      board.push(["#", "#", "#"]);
+    }
+  }
+
+
+  return { getBoard, resetBoard };
 }
 
-function gameController() {
-  const gameBoard = GameBoard();
-  let currentPlayerIndex = 0;
-
-  function activePlayer() {
-    const p1 = "Player One";
-    const p2 = "Player Two";
-
-    const players = [
-      { name: p1, symbol: "X" },
-      { name: p2, symbol: "O" },
-    ];
-
-    const getActivePlayer = () => players[currentPlayerIndex];
-
-    return { getActivePlayer };
-  }
-
-  function switchPlayerTurn() {
-    currentPlayerIndex = (currentPlayerIndex + 1) % 2;
-  }
-
-  function playRound(row, column) {
-    const player = activePlayer().getActivePlayer();
-    const board = gameBoard.getBoard();
-    if (board[row][column] === "#") {
-      board[row][column] = player.symbol;
-      switchPlayerTurn();
-    }
-    console.log(
-      `${player.name} marked an ${player.symbol} on Row ${row} - Column ${column}`
-    );
-    console.log(board);
-  }
-
+function GameStatus(gameBoard) {
   function checkForWinner() {
     const board = gameBoard.getBoard();
+
+
     for (let i = 0; i < 3; i++) {
       if (
         board[i][0] !== "#" &&
@@ -84,16 +60,19 @@ function gameController() {
     return false;
   }
 
-  function gameStatus() {
+  function matchStatus() {
     const checkWin = checkForWinner();
     const board = gameBoard.getBoard();
+
     let draw = true;
 
     if (checkWin) {
       if (checkWin === "X") {
         console.log("Player 1 Wins");
+        return gameBoard.resetBoard();
       } else if (checkWin === "O") {
         console.log("Player 2 Wins!");
+        return gameBoard.resetBoard();
       }
     } else {
       for (let i = 0; i < 3; i++) {
@@ -105,27 +84,77 @@ function gameController() {
       }
 
       if (draw) {
-        console.log("It's a draw")
+        console.log("It's a draw");
+        return gameBoard.resetBoard();
       }
-
     }
+    return  "Game in progress.";
   }
-
-  return { playRound, checkForWinner, gameStatus };
+  return { matchStatus, checkForWinner };
 }
 
-const gamePlay = gameController();
-gamePlay.playRound(0, 0);
-gamePlay.playRound(0, 1);
-gamePlay.playRound(0, 2);
+function GameController() {
+  const gameBoard = GameBoard();
+  const gameStatus = GameStatus(gameBoard);
+  let currentPlayerIndex = 0;
 
-// gamePlay.playRound(1, 1);
-// gamePlay.playRound(1, 0);
-// gamePlay.playRound(1, 2);
+  function activePlayer() {
+    const p1 = "Player One";
+    const p2 = "Player Two";
 
-// gamePlay.playRound(2, 1);
-// gamePlay.playRound(2, 0);
-// gamePlay.playRound(2, 2);
+    const players = [
+      { name: p1, symbol: "X" },
+      { name: p2, symbol: "O" },
+    ];
 
-gamePlay.checkForWinner();
-gamePlay.gameStatus();
+    const getActivePlayer = () => players[currentPlayerIndex];
+
+    return { getActivePlayer };
+  }
+
+  function switchPlayerTurn() {
+    currentPlayerIndex = (currentPlayerIndex + 1) % 2;
+  }
+
+  function playRound(row, column) {
+    const player = activePlayer().getActivePlayer();
+    const board = gameBoard.getBoard();
+
+    if (board[row][column] === "#") {
+      board[row][column] = player.symbol;
+      switchPlayerTurn();
+    }
+
+    else {
+      return console.error("You canno't play this move. Cell is taken.");
+    }
+
+
+    console.log(
+      `${player.name} marked an ${player.symbol} on Row ${row} - Column ${column}`
+    );
+    console.log(board);
+    const winner = gameStatus.checkForWinner();
+    const matchStatusResult = gameStatus.matchStatus();
+  
+    // Log or use the return values appropriately
+    console.log("Winner:", winner);
+    console.log("Match Status:", matchStatusResult);
+  }
+
+  return { playRound };
+}
+
+const runTicTacToe = GameController();
+runTicTacToe.playRound(0, 1);
+runTicTacToe.playRound(2, 0);
+
+runTicTacToe.playRound(0, 2);
+runTicTacToe.playRound(2, 2);
+
+runTicTacToe.playRound(0,0);
+runTicTacToe.playRound(0,1);
+
+// runTicTacToe.playRound(0, 2);
+// runTicTacToe.playRound(2, 0);
+
