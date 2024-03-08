@@ -12,12 +12,30 @@ function GameBoard() {
     for (let i = 0; i < grid; i++) {
       board.push(["#", "#", "#"]);
     }
+
   }
 
   return { getBoard, resetBoard };
 }
 
 function GameStatus(gameBoard) {
+  function clearDOM() {
+    const squares = document.querySelectorAll(".container div");
+    squares.forEach((square) => {
+      square.textContent = "";
+    });
+  }
+
+  function restartBoard() {
+    const resetButton = document.querySelector(".restart");
+    resetButton.addEventListener("click", () => {
+      gameBoard.resetBoard();
+      clearDOM();
+    });
+  }
+
+  restartBoard();
+
   function checkForWinner() {
     const board = gameBoard.getBoard();
 
@@ -62,25 +80,17 @@ function GameStatus(gameBoard) {
     const checkWin = checkForWinner();
     const board = gameBoard.getBoard();
 
-    function clearDOM() {
-      const squares = document.querySelectorAll(".container div");
-      squares.forEach((square) => {
-        square.textContent = "";
-      });
-    }
     let draw = true;
 
     if (checkWin) {
       if (checkWin === "X") {
         alert("Player 1 Wins");
         clearDOM();
-         gameBoard.resetBoard();
-         console.log(board)
+        gameBoard.resetBoard();
       } else if (checkWin === "O") {
         alert("Player 2 Wins!");
         clearDOM();
-         gameBoard.resetBoard();
-         console.log(board)
+        gameBoard.resetBoard();
       }
     } else {
       for (let i = 0; i < 3; i++) {
@@ -99,13 +109,30 @@ function GameStatus(gameBoard) {
     }
     return "Game in progress.";
   }
-  return { matchStatus, checkForWinner };
+
+  return { matchStatus, checkForWinner, clearDOM };
 }
 
 function GameController() {
   const gameBoard = GameBoard();
   const gameStatus = GameStatus(gameBoard);
   let currentPlayerIndex = 0;
+
+  const symbolBtn = document.querySelectorAll(".symbol");
+  symbolBtn.forEach((element) => {
+    element.addEventListener("click", () => {
+      if (element.textContent === "X") {
+        currentPlayerIndex = 0;
+        gameBoard.resetBoard();
+        gameStatus.clearDOM();
+      } else {
+        currentPlayerIndex = 1;
+        gameBoard.resetBoard();
+        gameStatus.clearDOM();
+        console.log(element.textContent)
+      }
+    });
+  });
 
   function activePlayer() {
     const p1 = "Player One";
@@ -143,7 +170,7 @@ function GameController() {
     console.log("Match Status:", matchStatusResult);
   }
 
-  return { playRound, activePlayer, switchPlayerTurn };
+  return { playRound, activePlayer, switchPlayerTurn, currentPlayerIndex };
 }
 
 function DOM() {
@@ -162,3 +189,19 @@ function DOM() {
 }
 
 DOM();
+
+
+//CSS Styling for butto
+const toggleButtons = document.querySelectorAll('.symbol');
+
+toggleButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const activeButtons = document.querySelectorAll('.symbol.active');
+
+    activeButtons.forEach(activeBtn => {
+      activeBtn.classList.remove('active');
+    });
+
+    btn.classList.add('active');
+  });
+});
