@@ -14,14 +14,12 @@ function GameBoard() {
     }
   }
 
-
   return { getBoard, resetBoard };
 }
 
 function GameStatus(gameBoard) {
   function checkForWinner() {
     const board = gameBoard.getBoard();
-
 
     for (let i = 0; i < 3; i++) {
       if (
@@ -64,15 +62,25 @@ function GameStatus(gameBoard) {
     const checkWin = checkForWinner();
     const board = gameBoard.getBoard();
 
+    function clearDOM() {
+      const squares = document.querySelectorAll(".container div");
+      squares.forEach((square) => {
+        square.textContent = "";
+      });
+    }
     let draw = true;
 
     if (checkWin) {
       if (checkWin === "X") {
-        console.log("Player 1 Wins");
-        return gameBoard.resetBoard();
+        alert("Player 1 Wins");
+        clearDOM();
+         gameBoard.resetBoard();
+         console.log(board)
       } else if (checkWin === "O") {
-        console.log("Player 2 Wins!");
-        return gameBoard.resetBoard();
+        alert("Player 2 Wins!");
+        clearDOM();
+         gameBoard.resetBoard();
+         console.log(board)
       }
     } else {
       for (let i = 0; i < 3; i++) {
@@ -84,11 +92,12 @@ function GameStatus(gameBoard) {
       }
 
       if (draw) {
-        console.log("It's a draw");
-        return gameBoard.resetBoard();
+        alert("It's a draw");
+        clearDOM();
+        gameBoard.resetBoard();
       }
     }
-    return  "Game in progress.";
+    return "Game in progress.";
   }
   return { matchStatus, checkForWinner };
 }
@@ -123,38 +132,33 @@ function GameController() {
     if (board[row][column] === "#") {
       board[row][column] = player.symbol;
       switchPlayerTurn();
-    }
-
-    else {
+    } else {
       return console.error("You canno't play this move. Cell is taken.");
     }
 
-
-    console.log(
-      `${player.name} marked an ${player.symbol} on Row ${row} - Column ${column}`
-    );
-    console.log(board);
     const winner = gameStatus.checkForWinner();
     const matchStatusResult = gameStatus.matchStatus();
-  
-    // Log or use the return values appropriately
+
     console.log("Winner:", winner);
     console.log("Match Status:", matchStatusResult);
   }
 
-  return { playRound };
+  return { playRound, activePlayer, switchPlayerTurn };
 }
 
-const runTicTacToe = GameController();
-runTicTacToe.playRound(0, 1);
-runTicTacToe.playRound(2, 0);
+function DOM() {
+  const squares = document.querySelectorAll(".square");
+  const gameController = GameController();
 
-runTicTacToe.playRound(0, 2);
-runTicTacToe.playRound(2, 2);
+  squares.forEach((square, index) => {
+    square.addEventListener("click", () => {
+      const player = gameController.activePlayer().getActivePlayer();
+      const row = Math.floor(index / 3);
+      const col = index % 3;
+      square.textContent = player.symbol;
+      gameController.playRound(row, col);
+    });
+  });
+}
 
-runTicTacToe.playRound(0,0);
-runTicTacToe.playRound(0,1);
-
-// runTicTacToe.playRound(0, 2);
-// runTicTacToe.playRound(2, 0);
-
+DOM();
