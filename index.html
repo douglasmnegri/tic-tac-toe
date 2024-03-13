@@ -7,23 +7,54 @@
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <div class="box">
-      <button class="x symbol">X</button>
-      <button class="o symbol">O</button>
-      <button class="restart">Restart Game</button>
-      <div class="container center">
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
+    <div class="content">
+      <div class="header">
+        <div class="title">
+        <div><h2>Tic Tac Toe</h2></div>
+      </div>
+
+        <div class="header-button">
+          <button class="opponent">Choose Opponent</button>
+          <button class="icon">Change Icon</button>
+        </div>
+      </div>
+
+      <div class="boxboard">
+        <div class="score-board">
+          <div class="row">
+            <div class="col col-heading">
+              <h1>HOME</h1>
+            </div>
+            <div class="col col-display" id="scoreX">0</div>
+          </div>
+          <div class="row">
+            <div class="col col-heading">
+              <h1>GUEST</h1>
+            </div>
+            <div class="col col-display" id="scoreO">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="container center">
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+        </div>
+        <div class="btn-container">
+          <button class="x symbol">X</button>
+          <button class="o symbol">O</button>
+          <button class="restart">Restart Game</button>
+        </div>
       </div>
     </div>
-    
 
     <script src="script.js"></script>
   </body>

@@ -12,13 +12,15 @@ function GameBoard() {
     for (let i = 0; i < grid; i++) {
       board.push(["#", "#", "#"]);
     }
-
   }
 
   return { getBoard, resetBoard };
 }
 
 function GameStatus(gameBoard) {
+  let countOne = 0;
+  let countTwo = 0;
+  
   function clearDOM() {
     const squares = document.querySelectorAll(".container div");
     squares.forEach((square) => {
@@ -82,6 +84,19 @@ function GameStatus(gameBoard) {
 
     let draw = true;
 
+    function countScore() {
+      const playerOne = document.querySelector("#scoreX");
+      const playerTwo = document.querySelector("#scoreO");
+
+      if (checkWin) {
+        checkWin === "X" ? countOne++ : countTwo++;
+      }
+
+      playerOne.textContent = countOne;
+      playerTwo.textContent = countTwo;
+    }
+    countScore(checkWin);
+
     if (checkWin) {
       if (checkWin === "X") {
         alert("Player 1 Wins");
@@ -129,7 +144,7 @@ function GameController() {
         currentPlayerIndex = 1;
         gameBoard.resetBoard();
         gameStatus.clearDOM();
-        console.log(element.textContent)
+        console.log(element.textContent);
       }
     });
   });
@@ -159,10 +174,9 @@ function GameController() {
     if (board[row][column] === "#") {
       board[row][column] = player.symbol;
       switchPlayerTurn();
-    } else {
-      return console.error("You canno't play this move. Cell is taken.");
     }
 
+    console.log(board);
     const winner = gameStatus.checkForWinner();
     const matchStatusResult = gameStatus.matchStatus();
 
@@ -179,29 +193,30 @@ function DOM() {
 
   squares.forEach((square, index) => {
     square.addEventListener("click", () => {
-      const player = gameController.activePlayer().getActivePlayer();
-      const row = Math.floor(index / 3);
-      const col = index % 3;
-      square.textContent = player.symbol;
-      gameController.playRound(row, col);
+      if (square.textContent === "") {
+        const player = gameController.activePlayer().getActivePlayer();
+        const row = Math.floor(index / 3);
+        const col = index % 3;
+        square.textContent = player.symbol;
+        gameController.playRound(row, col);
+      }
     });
   });
 }
 
 DOM();
 
-
 //CSS Styling for butto
-const toggleButtons = document.querySelectorAll('.symbol');
+const toggleButtons = document.querySelectorAll(".symbol");
 
-toggleButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const activeButtons = document.querySelectorAll('.symbol.active');
+toggleButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const activeButtons = document.querySelectorAll(".symbol.active");
 
-    activeButtons.forEach(activeBtn => {
-      activeBtn.classList.remove('active');
+    activeButtons.forEach((activeBtn) => {
+      activeBtn.classList.remove("active");
     });
 
-    btn.classList.add('active');
+    btn.classList.add("active");
   });
 });
