@@ -108,10 +108,24 @@ button:hover {
   justify-content: center;
 }
 
+.vert {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.hori {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+
 .square {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2.5em;
-  border: double black;
+}
+
+.board1 {
+  border: solid black 2px;
 }

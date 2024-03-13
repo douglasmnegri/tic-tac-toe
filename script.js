@@ -20,7 +20,7 @@ function GameBoard() {
 function GameStatus(gameBoard) {
   let countOne = 0;
   let countTwo = 0;
-  
+
   function clearDOM() {
     const squares = document.querySelectorAll(".container div");
     squares.forEach((square) => {
@@ -84,26 +84,13 @@ function GameStatus(gameBoard) {
 
     let draw = true;
 
-    function countScore() {
-      const playerOne = document.querySelector("#scoreX");
-      const playerTwo = document.querySelector("#scoreO");
-
-      if (checkWin) {
-        checkWin === "X" ? countOne++ : countTwo++;
-      }
-
-      playerOne.textContent = countOne;
-      playerTwo.textContent = countTwo;
-    }
-    countScore(checkWin);
-
     if (checkWin) {
       if (checkWin === "X") {
-        alert("Player 1 Wins");
+        alert("This round goes for X");
         clearDOM();
         gameBoard.resetBoard();
       } else if (checkWin === "O") {
-        alert("Player 2 Wins!");
+        alert("This round goes for O");
         clearDOM();
         gameBoard.resetBoard();
       }
@@ -122,6 +109,38 @@ function GameStatus(gameBoard) {
         gameBoard.resetBoard();
       }
     }
+    const playerOne = document.querySelector("#scoreX");
+    const playerTwo = document.querySelector("#scoreO");
+
+    function countScore() {
+      if (checkWin) {
+        checkWin === "X" ? countOne++ : countTwo++;
+      }
+
+      playerOne.textContent = countOne;
+      playerTwo.textContent = countTwo;
+    }
+
+    countScore(checkWin);
+
+    function matchWinner() {
+      if (countOne === 3) {
+        countOne = 0;
+        countTwo = 0;
+        playerOne.textContent = countOne;
+        playerTwo.textContent = countTwo;
+        alert("Player 1 Wins the match!");
+      } else if (countTwo === 3) {
+        countOne = 0;
+        countTwo = 0;
+        playerOne.textContent = countOne;
+        playerTwo.textContent = countTwo;
+        alert("Player 2 Wins the match!");
+      }
+    }
+
+    matchWinner();
+
     return "Game in progress.";
   }
 
@@ -206,9 +225,8 @@ function DOM() {
 
 DOM();
 
-//CSS Styling for butto
+//CSS Styling
 const toggleButtons = document.querySelectorAll(".symbol");
-
 toggleButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const activeButtons = document.querySelectorAll(".symbol.active");
@@ -220,3 +238,27 @@ toggleButtons.forEach((btn) => {
     btn.classList.add("active");
   });
 });
+
+function chooseGrid() {
+  const squares = document.querySelectorAll(".square");
+  const gridButton = document.querySelector(".grid");
+  gridButton.addEventListener("click", () => {
+    squares.forEach((element, index) => {
+      if (element.classList.contains("board1")) {
+        element.classList.remove("board1");
+        if (index > 2 && index < 6) {
+          element.classList.add("hori");
+        }
+        if(index == 1 || index == 4 || index == 7) {
+          element.classList.add("vert");
+        }
+      } else {
+        element.classList.add("board1");
+        element.classList.remove("hori");
+        element.classList.remove("vert");
+      }
+    });
+  });
+}
+
+chooseGrid();
