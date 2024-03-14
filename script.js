@@ -159,38 +159,43 @@ function GameController() {
   const gameStatus = GameStatus(gameBoard);
   const playerOne = document.querySelector("#scoreX");
   const playerTwo = document.querySelector("#scoreO");
+  const boardStyleButton = document.querySelector(".icon");
+  const container = document.querySelector(".container");
   let currentPlayerIndex = 0;
 
-  const symbolBtn = document.querySelectorAll(".symbol");
-  symbolBtn.forEach((element) => {
-    element.addEventListener("click", () => {
-      currentPlayerIndex = element.textContent === "X" ? 0 : 1;
-      gameBoard.resetBoard();
-      gameStatus.restartBoard();
-      gameStatus.clearDOM();
-      gameStatus.resetCount();
-      playerOne.textContent = 0;
-      playerTwo.textContent = 0;
+  const changeSymbol = () => {
+    const symbolBtn = document.querySelectorAll(".symbol");
+    symbolBtn.forEach((element) => {
+      element.addEventListener("click", () => {
+        currentPlayerIndex = element.textContent === "X" ? 0 : 1;
+        gameBoard.resetBoard();
+        gameStatus.restartBoard();
+        gameStatus.clearDOM();
+        gameStatus.resetCount();
+        playerOne.textContent = 0;
+        playerTwo.textContent = 0;
+      });
     });
-  });
+  };
+  changeSymbol();
+
+  const p1 = "Player One";
+  const p2 = "Player Two";
+
+  let players = [
+    {
+      name: p1,
+      symbol: "X",
+      image: "<img src='./images/model03/X.svg' alt='X'>",
+    },
+    {
+      name: p2,
+      symbol: "O",
+      image: "<img src='./images/model03/O.svg' alt='O'>",
+    },
+  ];
 
   function activePlayer() {
-    const p1 = "Player One";
-    const p2 = "Player Two";
-
-    const players = [
-      {
-        name: p1,
-        symbol: "X",
-        image: "<img src='./images/model03/X.svg' alt='X'>",
-      },
-      {
-        name: p2,
-        symbol: "O",
-        image: "<img src='./images/model03/O.svg' alt='O'>",
-      },
-    ];
-
     const getActivePlayer = () => players[currentPlayerIndex];
 
     return { getActivePlayer };
@@ -199,6 +204,42 @@ function GameController() {
   function switchPlayerTurn() {
     currentPlayerIndex = (currentPlayerIndex + 1) % 2;
   }
+
+  function changeBoardStyle() {
+    boardStyleButton.addEventListener("click", () => {
+      if (players[0].image === "<img src='./images/model03/X.svg' alt='X'>") {
+        players[0].image = "<img src='./images/model01/mid-x.svg' alt='X'>";
+        players[1].image = "<img src='./images/model01/mid-o.svg' alt='X'>";
+        container.classList.add("blue");
+        container.classList.remove("black");
+        container.classList.remove("colorful");
+      } else if (
+        players[0].image === "<img src='./images/model01/mid-x.svg' alt='X'>"
+      ) {
+        players[0].image = "<img src='./images/model02/x.svg' alt='X'>";
+        players[1].image = "<img src='./images/model02/o.svg' alt='X'>";
+        container.classList.add("colorful");
+        container.classList.remove("black");
+        container.classList.remove("blue");
+      } else if (
+        players[0].image === "<img src='./images/model02/x.svg' alt='X'>"
+      ) {
+        players[0].image = "<img src='./images/model03/X.svg' alt='X'>";
+        players[1].image = "<img src='./images/model03/O.svg' alt='X'>";
+        container.classList.add("black");
+        container.classList.remove("blue");
+        container.classList.remove("colorful");
+      }
+      gameBoard.resetBoard();
+      gameStatus.restartBoard();
+      gameStatus.clearDOM();
+      gameStatus.resetCount();
+      playerOne.textContent = 0;
+      playerTwo.textContent = 0;
+    });
+  }
+
+  changeBoardStyle();
 
   function playRound(row, column) {
     const player = activePlayer().getActivePlayer();
@@ -221,13 +262,14 @@ function GameController() {
     playRound,
     activePlayer,
     switchPlayerTurn,
-    getActivePlayerImage: () => activePlayer().getActivePlayer().image,
+    changeBoardStyle,
   };
 }
 
 function DOM() {
   const squares = document.querySelectorAll(".square");
   const gameController = GameController();
+  const changeBoardStyle = gameController.changeBoardStyle();
 
   squares.forEach((square, index) => {
     square.addEventListener("click", () => {
@@ -280,24 +322,6 @@ function styling() {
       });
     });
   }
-
-  // function changeIcon() {
-  //   const iconButton = document.querySelector(".icon");
-  //   const playerImage = GameController().getActivePlayerImage();
-  //   const images = [
-  //     {
-  //       X1: "<img src='./images/model01/mid-x.svg' alt='X'>",
-  //       X2: "<img src='./images/model01/mid-o.svg' alt='X'>",
-  //     },
-  //     {
-  //       X3: "<img src='./images/model03/X.svg' alt='X'>",
-  //       O3: "<img src='./images/model03/O.svg' alt='O'>",
-  //     },
-  //   ];
-  //   iconButton.addEventListener("click", () => {
-  //     playerImage = 
-  //   });
-  // }
   chooseGrid();
 }
 

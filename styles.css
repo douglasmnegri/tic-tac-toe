@@ -130,12 +130,12 @@ button:hover {
   border-bottom: 2px solid black;
 }
 
-
 .square {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2.5em;
+  gap: 10px;
 }
 
 .board1 {
