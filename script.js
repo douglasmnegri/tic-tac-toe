@@ -20,11 +20,13 @@ function GameBoard() {
 function GameStatus(gameBoard) {
   let countOne = 0;
   let countTwo = 0;
+  const playerOne = document.querySelector("#scoreX");
+  const playerTwo = document.querySelector("#scoreO");
 
   function clearDOM() {
     const squares = document.querySelectorAll(".container div");
     squares.forEach((square) => {
-      square.textContent = "";
+      square.innerHTML = "";
     });
   }
 
@@ -33,10 +35,17 @@ function GameStatus(gameBoard) {
     resetButton.addEventListener("click", () => {
       gameBoard.resetBoard();
       clearDOM();
+      countOne = 0;
+      countTwo = 0;
+      playerOne.textContent = 0;
+      playerTwo.textContent = 0;
     });
   }
 
-  restartBoard();
+  function resetCount() {
+    countOne = 0;
+    countTwo = 0;
+  }
 
   function checkForWinner() {
     const board = gameBoard.getBoard();
@@ -109,8 +118,6 @@ function GameStatus(gameBoard) {
         gameBoard.resetBoard();
       }
     }
-    const playerOne = document.querySelector("#scoreX");
-    const playerTwo = document.querySelector("#scoreO");
 
     function countScore() {
       if (checkWin) {
@@ -144,27 +151,26 @@ function GameStatus(gameBoard) {
     return "Game in progress.";
   }
 
-  return { matchStatus, checkForWinner, clearDOM };
+  return { matchStatus, checkForWinner, clearDOM, restartBoard, resetCount };
 }
 
 function GameController() {
   const gameBoard = GameBoard();
   const gameStatus = GameStatus(gameBoard);
+  const playerOne = document.querySelector("#scoreX");
+  const playerTwo = document.querySelector("#scoreO");
   let currentPlayerIndex = 0;
 
   const symbolBtn = document.querySelectorAll(".symbol");
   symbolBtn.forEach((element) => {
     element.addEventListener("click", () => {
-      if (element.textContent === "X") {
-        currentPlayerIndex = 0;
-        gameBoard.resetBoard();
-        gameStatus.clearDOM();
-      } else {
-        currentPlayerIndex = 1;
-        gameBoard.resetBoard();
-        gameStatus.clearDOM();
-        console.log(element.textContent);
-      }
+      currentPlayerIndex = element.textContent === "X" ? 0 : 1;
+      gameBoard.resetBoard();
+      gameStatus.restartBoard();
+      gameStatus.clearDOM();
+      gameStatus.resetCount();
+      playerOne.textContent = 0;
+      playerTwo.textContent = 0;
     });
   });
 
@@ -173,8 +179,16 @@ function GameController() {
     const p2 = "Player Two";
 
     const players = [
-      { name: p1, symbol: "X" },
-      { name: p2, symbol: "O" },
+      {
+        name: p1,
+        symbol: "X",
+        image: "<img src='./images/model03/X.svg' alt='X'>",
+      },
+      {
+        name: p2,
+        symbol: "O",
+        image: "<img src='./images/model03/O.svg' alt='O'>",
+      },
     ];
 
     const getActivePlayer = () => players[currentPlayerIndex];
@@ -203,7 +217,12 @@ function GameController() {
     console.log("Match Status:", matchStatusResult);
   }
 
-  return { playRound, activePlayer, switchPlayerTurn, currentPlayerIndex };
+  return {
+    playRound,
+    activePlayer,
+    switchPlayerTurn,
+    getActivePlayerImage: () => activePlayer().getActivePlayer().image,
+  };
 }
 
 function DOM() {
@@ -212,11 +231,11 @@ function DOM() {
 
   squares.forEach((square, index) => {
     square.addEventListener("click", () => {
-      if (square.textContent === "") {
+      if (square.innerHTML === "") {
         const player = gameController.activePlayer().getActivePlayer();
         const row = Math.floor(index / 3);
         const col = index % 3;
-        square.textContent = player.symbol;
+        square.innerHTML = player.image;
         gameController.playRound(row, col);
       }
     });
@@ -226,39 +245,60 @@ function DOM() {
 DOM();
 
 //CSS Styling
-const toggleButtons = document.querySelectorAll(".symbol");
-toggleButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const activeButtons = document.querySelectorAll(".symbol.active");
+function styling() {
+  const toggleButtons = document.querySelectorAll(".symbol");
+  toggleButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const activeButtons = document.querySelectorAll(".symbol.active");
 
-    activeButtons.forEach((activeBtn) => {
-      activeBtn.classList.remove("active");
-    });
+      activeButtons.forEach((activeBtn) => {
+        activeBtn.classList.remove("active");
+      });
 
-    btn.classList.add("active");
-  });
-});
-
-function chooseGrid() {
-  const squares = document.querySelectorAll(".square");
-  const gridButton = document.querySelector(".grid");
-  gridButton.addEventListener("click", () => {
-    squares.forEach((element, index) => {
-      if (element.classList.contains("board1")) {
-        element.classList.remove("board1");
-        if (index > 2 && index < 6) {
-          element.classList.add("hori");
-        }
-        if(index == 1 || index == 4 || index == 7) {
-          element.classList.add("vert");
-        }
-      } else {
-        element.classList.add("board1");
-        element.classList.remove("hori");
-        element.classList.remove("vert");
-      }
+      btn.classList.add("active");
     });
   });
+
+  function chooseGrid() {
+    const squares = document.querySelectorAll(".square");
+    const gridButton = document.querySelector(".grid");
+    gridButton.addEventListener("click", () => {
+      squares.forEach((element, index) => {
+        if (element.classList.contains("board1")) {
+          element.classList.remove("board1");
+          if (index > 2 && index < 6) {
+            element.classList.add("hori");
+          }
+          if (index == 1 || index == 4 || index == 7) {
+            element.classList.add("vert");
+          }
+        } else {
+          element.classList.add("board1");
+          element.classList.remove("hori");
+          element.classList.remove("vert");
+        }
+      });
+    });
+  }
+
+  // function changeIcon() {
+  //   const iconButton = document.querySelector(".icon");
+  //   const playerImage = GameController().getActivePlayerImage();
+  //   const images = [
+  //     {
+  //       X1: "<img src='./images/model01/mid-x.svg' alt='X'>",
+  //       X2: "<img src='./images/model01/mid-o.svg' alt='X'>",
+  //     },
+  //     {
+  //       X3: "<img src='./images/model03/X.svg' alt='X'>",
+  //       O3: "<img src='./images/model03/O.svg' alt='O'>",
+  //     },
+  //   ];
+  //   iconButton.addEventListener("click", () => {
+  //     playerImage = 
+  //   });
+  // }
+  chooseGrid();
 }
 
-chooseGrid();
+styling();
