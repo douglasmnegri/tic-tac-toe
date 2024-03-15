@@ -211,7 +211,6 @@ function GameController() {
         players[0].image = "<img src='./images/model01/mid-x.svg' alt='X'>";
         players[1].image = "<img src='./images/model01/mid-o.svg' alt='X'>";
         container.classList.add("blue");
-        container.classList.remove("black");
         container.classList.remove("colorful");
       } else if (
         players[0].image === "<img src='./images/model01/mid-x.svg' alt='X'>"
@@ -219,17 +218,26 @@ function GameController() {
         players[0].image = "<img src='./images/model02/x.svg' alt='X'>";
         players[1].image = "<img src='./images/model02/o.svg' alt='X'>";
         container.classList.add("colorful");
-        container.classList.remove("black");
         container.classList.remove("blue");
       } else if (
         players[0].image === "<img src='./images/model02/x.svg' alt='X'>"
       ) {
         players[0].image = "<img src='./images/model03/X.svg' alt='X'>";
         players[1].image = "<img src='./images/model03/O.svg' alt='X'>";
-        container.classList.add("black");
         container.classList.remove("blue");
         container.classList.remove("colorful");
       }
+
+      const squares = document.querySelectorAll(".square");
+      squares.forEach(square => {
+        square.classList.remove("blue", "colorful"); 
+        if (container.classList.contains("blue")) {
+          square.classList.add("blue");
+        } else if (container.classList.contains("colorful")) {
+          square.classList.add("colorful");
+        }
+      });
+
       gameBoard.resetBoard();
       gameStatus.restartBoard();
       gameStatus.clearDOM();
@@ -269,7 +277,6 @@ function GameController() {
 function DOM() {
   const squares = document.querySelectorAll(".square");
   const gameController = GameController();
-  const changeBoardStyle = gameController.changeBoardStyle();
 
   squares.forEach((square, index) => {
     square.addEventListener("click", () => {

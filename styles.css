@@ -136,8 +136,30 @@ button:hover {
   align-items: center;
   font-size: 2.5em;
   gap: 10px;
+  cursor: pointer;
 }
 
 .board1 {
   border: solid black 2px;
+}
+
+.blue {
+  border: 5px solid rgb(39, 146, 255);
+  border-radius: 0.5em;
+  box-sizing: border-box;
+}
+
+
+.colorful {
+  border: 5px solid; 
+  animation: color-change 3s infinite alternate; 
+}
+
+@keyframes color-change {
+  0% {
+    border-color: rgb(173, 201, 250);
+  }
+  100% {
+    border-color: rgb(226, 127, 131);
+  }
 }
