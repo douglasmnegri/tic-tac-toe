@@ -24,13 +24,13 @@
           <div class="score-board">
             <div class="row">
               <div class="col col-heading">
-                <h1>Player X:</h1>
+                <h1 id="p1">Player X:</h1>
               </div>
               <div class="col col-display" id="scoreX">0</div>
             </div>
             <div class="row">
               <div class="col col-heading">
-                <h1>Player O:</h1>
+                <h1 id="p2">Player O:</h1>
               </div>
               <div class="col col-display" id="scoreO">0</div>
             </div>
@@ -56,6 +56,18 @@
         </div>
             </div>
       </div>
+      <form>
+        <fieldset>
+          <legend>Player's Name</legend>
+          <label for="name">Player One
+           <input type="text" name="name" id="name">
+          </label>
+          <label for="name2">Player Two
+            <input type="text" name="name2" id="name2">
+          </label>
+          <button type="submit" class="submit" disabled>Submit Names</button>
+        </fieldset>
+      </form>
 
     <script src="script.js"></script>
   </body>

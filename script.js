@@ -229,8 +229,8 @@ function GameController() {
       }
 
       const squares = document.querySelectorAll(".square");
-      squares.forEach(square => {
-        square.classList.remove("blue", "colorful"); 
+      squares.forEach((square) => {
+        square.classList.remove("blue", "colorful");
         if (container.classList.contains("blue")) {
           square.classList.add("blue");
         } else if (container.classList.contains("colorful")) {
@@ -295,19 +295,21 @@ DOM();
 
 //CSS Styling
 function styling() {
-  const toggleButtons = document.querySelectorAll(".symbol");
-  toggleButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const activeButtons = document.querySelectorAll(".symbol.active");
+  function toggleActiveButtons() {
+    const toggleButtons = document.querySelectorAll(".symbol");
+    toggleButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const activeButtons = document.querySelectorAll(".symbol.active");
 
-      activeButtons.forEach((activeBtn) => {
-        activeBtn.classList.remove("active");
+        activeButtons.forEach((activeBtn) => {
+          activeBtn.classList.remove("active");
+        });
+
+        btn.classList.add("active");
       });
-
-      btn.classList.add("active");
     });
-  });
-
+  }
+  //Function to change the grid layout
   function chooseGrid() {
     const squares = document.querySelectorAll(".square");
     const gridButton = document.querySelector(".grid");
@@ -329,7 +331,37 @@ function styling() {
       });
     });
   }
+
+  function checkInputs() {
+    const nameField = document.querySelector("#name");
+    const nameField2 = document.querySelector("#name2");
+    const submitBtn = document.querySelector(".submit");
+    const midContent = document.querySelector(".mid-content");
+    const form = document.querySelector("form");
+
+    function validateInputs() {
+      const nameFieldLength = nameField.value.trim().length;
+      const nameField2Length = nameField2.value.trim().length;
+      submitBtn.disabled = !(nameFieldLength > 1 && nameField2Length > 1);
+    }
+
+    nameField.addEventListener("input", checkInputs);
+    nameField2.addEventListener("input", checkInputs);
+
+    function changeName() {
+      submitBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        form.classList.add("hide-form");
+        midContent.style.visibility = "visible";
+      });
+    }
+    changeName();
+    validateInputs();
+  }
+
+  toggleActiveButtons();
   chooseGrid();
+  checkInputs();
 }
 
 styling();

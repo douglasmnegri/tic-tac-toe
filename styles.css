@@ -33,6 +33,7 @@ body {
   padding: 2em;
   border: solid black;
   border-radius: 10px;
+  visibility: hidden;
 }
 
 .header {
@@ -153,6 +154,37 @@ button:hover {
 .colorful {
   border: 5px solid; 
   animation: color-change 3s infinite alternate; 
+}
+
+form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.hide-form {
+  visibility: hidden;
+}
+
+fieldset {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-size: larger;
+  font-weight: lighter;
+  display: grid;
+  padding: 1.5em;
+  height: 15em;
+  width: 20em;
+}
+
+input {
+  display: block;
+}
+
+button:disabled {
+  background-color: #8f8e8e;
 }
 
 @keyframes color-change {
