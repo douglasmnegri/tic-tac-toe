@@ -12,10 +12,10 @@
         <div class="title">
           <div><h2>Tic Tac Toe</h2></div>
         </div>
-
         <div class="header-button">
           <button class="icon">Change Board Style</button>
           <button class="grid">Change Grid</button>
+          <button class="restart">Restart Game</button>
         </div>
       </div>
 
@@ -36,6 +36,7 @@
             </div>
           </div>
         </div>
+        <div class="currentPlayer">It's player 1 turn</div>
         <div class="box">
           <div class="container center">
             <div class="square"></div>
@@ -51,23 +52,24 @@
           <div class="btn-container">
             <button class="x symbol">X</button>
             <button class="o symbol">O</button>
-            <button class="restart">Restart Game</button>
           </div>
         </div>
-            </div>
       </div>
-      <form>
-        <fieldset>
-          <legend>Player's Name</legend>
-          <label for="name">Player One
-           <input type="text" name="name" id="name">
-          </label>
-          <label for="name2">Player Two
-            <input type="text" name="name2" id="name2">
-          </label>
-          <button type="submit" class="submit" disabled>Submit Names</button>
-        </fieldset>
-      </form>
+    </div>
+    <form>
+      <fieldset>
+        <legend>Player's Name</legend>
+        <label for="name"
+          >Player One
+          <input type="text" name="name" id="name" />
+        </label>
+        <label for="name2"
+          >Player Two
+          <input type="text" name="name2" id="name2" />
+        </label>
+        <button type="submit" class="submit" disabled>Submit Names</button>
+      </fieldset>
+    </form>
 
     <script src="script.js"></script>
   </body>

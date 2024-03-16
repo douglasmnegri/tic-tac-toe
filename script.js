@@ -90,16 +90,18 @@ function GameStatus(gameBoard) {
   function matchStatus() {
     const checkWin = checkForWinner();
     const board = gameBoard.getBoard();
+    const p1Name = document.querySelector("#p1");
+    const p2Name = document.querySelector("#p2");
 
     let draw = true;
 
     if (checkWin) {
       if (checkWin === "X") {
-        alert("This round goes for X");
+        alert(`This round goes for ${p1Name.textContent.split("-").join("")}`);
         clearDOM();
         gameBoard.resetBoard();
       } else if (checkWin === "O") {
-        alert("This round goes for O");
+        alert(`This round goes for ${p2Name.textContent.split("-").join("")}`);
         clearDOM();
         gameBoard.resetBoard();
       }
@@ -136,13 +138,13 @@ function GameStatus(gameBoard) {
         countTwo = 0;
         playerOne.textContent = countOne;
         playerTwo.textContent = countTwo;
-        alert("Player 1 Wins the match!");
+        alert(`${p1Name.textContent.split("-").join("")}wins the match!`);
       } else if (countTwo === 3) {
         countOne = 0;
         countTwo = 0;
         playerOne.textContent = countOne;
         playerTwo.textContent = countTwo;
-        alert("Player 2 Wins the match!");
+        alert(`${p2Name.textContent.split("-").join("")}wins the match!`);
       }
     }
 
@@ -197,7 +199,6 @@ function GameController() {
 
   function activePlayer() {
     const getActivePlayer = () => players[currentPlayerIndex];
-
     return { getActivePlayer };
   }
 
@@ -278,6 +279,26 @@ function DOM() {
   const squares = document.querySelectorAll(".square");
   const gameController = GameController();
 
+  function playerTurn() {
+    const p1 = gameController.activePlayer().getActivePlayer().name;
+    const currentPlayer = document.querySelector('.currentPlayer');
+    const nameField = document.querySelector("#name");
+    const nameField2 = document.querySelector("#name2");
+
+    if (p1 === "Player One") {
+      currentPlayer.textContent = `It's ${nameField.value}'s turn`; 
+    } else if (p1 === "Player Two") {
+      currentPlayer.textContent = `It's ${nameField2.value}'s turn`; 
+    }
+  }
+
+  playerTurn();
+
+  const nameField = document.querySelector("#name");
+  const nameField2 = document.querySelector("#name2");
+  nameField.addEventListener("input", playerTurn);
+  nameField2.addEventListener("input", playerTurn);
+
   squares.forEach((square, index) => {
     square.addEventListener("click", () => {
       if (square.innerHTML === "") {
@@ -286,12 +307,17 @@ function DOM() {
         const col = index % 3;
         square.innerHTML = player.image;
         gameController.playRound(row, col);
+        playerTurn(); // Update the turn after the player makes a move
       }
     });
   });
 }
 
-DOM();
+DOM(); 
+
+
+
+
 
 //CSS Styling
 function styling() {
@@ -337,6 +363,8 @@ function styling() {
     const nameField2 = document.querySelector("#name2");
     const submitBtn = document.querySelector(".submit");
     const midContent = document.querySelector(".mid-content");
+    const p1Name = document.querySelector("#p1");
+    const p2Name = document.querySelector("#p2");
     const form = document.querySelector("form");
 
     function validateInputs() {
@@ -353,6 +381,8 @@ function styling() {
         event.preventDefault();
         form.classList.add("hide-form");
         midContent.style.visibility = "visible";
+        p1Name.textContent = `${nameField.value} - `;
+        p2Name.textContent = `${nameField2.value} - `;
       });
     }
     changeName();
