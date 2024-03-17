@@ -4,6 +4,10 @@
 
 This project is a simple Tic-Tac-Toe game implemented using JavaScript, HTML, and CSS.
 
+## Live Demo
+
+Check out the [Tic-Tac-Toe Game](https://douglasmnegri.github.io/tic-tac-toe/) live!
+
 ## Features
 
 - **Player Name Selection**: Players can input their names before starting the game.
