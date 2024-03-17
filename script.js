@@ -42,6 +42,8 @@ function GameStatus(gameBoard) {
     });
   }
 
+  restartBoard();
+
   function resetCount() {
     countOne = 0;
     countTwo = 0;
@@ -180,6 +182,7 @@ function GameController() {
     });
   };
   changeSymbol();
+  console.log(changeSymbol());
 
   const p1 = "Player One";
   const p2 = "Player Two";
@@ -259,7 +262,6 @@ function GameController() {
       switchPlayerTurn();
     }
 
-    console.log(board);
     const winner = gameStatus.checkForWinner();
     const matchStatusResult = gameStatus.matchStatus();
 
@@ -281,14 +283,14 @@ function DOM() {
 
   function playerTurn() {
     const p1 = gameController.activePlayer().getActivePlayer().name;
-    const currentPlayer = document.querySelector('.currentPlayer');
+    const currentPlayer = document.querySelector(".currentPlayer");
     const nameField = document.querySelector("#name");
     const nameField2 = document.querySelector("#name2");
 
     if (p1 === "Player One") {
-      currentPlayer.textContent = `It's ${nameField.value}'s turn`; 
+      currentPlayer.textContent = `It's ${nameField.value}'s turn`;
     } else if (p1 === "Player Two") {
-      currentPlayer.textContent = `It's ${nameField2.value}'s turn`; 
+      currentPlayer.textContent = `It's ${nameField2.value}'s turn`;
     }
   }
 
@@ -299,6 +301,11 @@ function DOM() {
   nameField.addEventListener("input", playerTurn);
   nameField2.addEventListener("input", playerTurn);
 
+  const buttonX = document.querySelector(".x");
+  const buttonO = document.querySelector(".o");
+  buttonX.addEventListener("click", playerTurn);
+  buttonO.addEventListener("click", playerTurn);
+
   squares.forEach((square, index) => {
     square.addEventListener("click", () => {
       if (square.innerHTML === "") {
@@ -307,17 +314,13 @@ function DOM() {
         const col = index % 3;
         square.innerHTML = player.image;
         gameController.playRound(row, col);
-        playerTurn(); // Update the turn after the player makes a move
+        playerTurn();
       }
     });
   });
 }
 
-DOM(); 
-
-
-
-
+DOM();
 
 //CSS Styling
 function styling() {
@@ -335,6 +338,7 @@ function styling() {
       });
     });
   }
+
   //Function to change the grid layout
   function chooseGrid() {
     const squares = document.querySelectorAll(".square");
